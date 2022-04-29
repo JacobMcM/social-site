@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "userName": "richard",
+      "password": "grayson",
+      "accountId": "theRealRobin",
+      "avatar": "",
+      "id": 1,
+      "followedByAccounts": {},
+      "followingAccounts": {}
+    },
+    {
+      "userName": "Barbara_gordon",
+      "password": "jagcjsgjqyg6262",
+      "accountId": "OracleEyes",
+      "avatar": "",
+      "id": 2,
+      "followedByAccounts": {},
+      "followingAccounts": {}
+    },
+    {
+      "userName": "Alfred1",
+      "password": "paswrod",
+      "accountId": "Proud_Butler_43",
+      "avatar": "",
+      "id": 3,
+      "followedByAccounts": {},
+      "followingAccounts": {}
+    },
+    {
+      "userName": "smogle",
+      "password": "676767",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 4
+    },
+    {
+      "userName": "Jeremy_Dixon",
+      "password": "IM_DIxon",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 5
+    },
+    {
+      "userName": "Mandro delreddi",
+      "password": "shishkabab",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 6
+    },
+    {
+      "userName": "Mandro delreddi",
+      "password": "shishkabab",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 7
+    },
+    {
+      "userName": "margetTheOne",
+      "password": "shshshshshhshshshs",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 8
+    }
+  ],
+  "posts": [
+    {
+      "userAccountId": "theRealRobin",
+      "userId": 1,
+      "id": 1,
+      "postTitle": "omg look how stupid batman looks",
+      "postContentType": "text",
+      "postContent": "he was very stupid in his pjs lmfao ahahahahahah so fuunny looking",
+      "numLikes": 24,
+      "numComments": 5,
+      "comments": {}
+    },
+    {
+      "userAccountId": "Barbara_gordon",
+      "userId": 2,
+      "id": 2,
+      "postTitle": "annother boring day",
+      "postContentType": "text",
+      "postContent": "nothing ever evr ever ever ever ever happens anywhere auahuguagugaugauhahaugaugauha",
+      "numLikes": 20,
+      "numComments": 4,
+      "comments": {}
+    },
+    {
+      "userAccountId": "Alfred1",
+      "userId": 3,
+      "id": 3,
+      "postTitle": "I cleaned up annother of The Batman's messes today",
+      "postContentType": "text",
+      "postContent": "this whole butler thing is beginning to... WAYNE on me",
+      "numLikes": 600,
+      "numComments": 1,
+      "comments": {}
+    }
+  ]
+}

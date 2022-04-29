@@ -1,30 +1,94 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+    <v-app>
+    <v-card
+    class="mx-auto"
+    max-width="448"
+  >
+    <v-layout>
+      <v-app-bar
+        color="primary"
+        density="compact"
+      >
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon @click="toHome"></v-app-bar-nav-icon>
+        </template>
+
+        
+
+        
+        <v-btn icon="mdi-magnify" @click="toSearch"></v-btn>
+        <v-btn icon="mdi-account-circle" @click="toMainAccount"></v-btn>
+
+
+
+      </v-app-bar>
+
+      <v-main>
+        <v-container fluid>
+            <router-view/>
+        </v-container>
+      </v-main>
+    </v-layout>
+  </v-card>
+  </v-app>
+
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
-}
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+<script>
+import SearchViewVue from './views/SearchView.vue'
+export default {
+    name: 'Profile',
+    data() {
+        return {
+            drawer: false,
+            group: null,
+            users: [],
+            posts: [],
+        }
+    },
+    methods: {
+        async fetchUsers() {
+            const res = await fetch('api/users')
+            const data = await res.json()
+            return data
+        },
+        async fetchPosts() {
+            const res = await fetch('api/posts')
+            const data = await res.json()
+            return data
+        },
+        toSearch(){
+          this.$router.push('/search');
+        },
+        toHome(){
+          this.$router.push('/home');
+        },
+        async pullUserFromUsername(username){
+          const users = this.fetchUsers();
 
-nav a.router-link-exact-active {
-  color: #42b983;
+          users.forEach(user => {
+            if (user.userName === username){
+              return user
+            }
+          })
+          console.log("user does not exist");
+        },
+    toMainAccount(){
+      const username = sessionStorage.getItem('username');
+
+      console.log(username)
+
+      const currUser = this.pullUserFromUsername(username)
+
+      this.$router.push(`/profile/${currUser.id}`)
+    }
+  },
+  async created(){
+    this.users = await this.fetchUsers(),
+    this.posts = await this.fetchPosts()
+  }
 }
-</style>
+</script>
+
