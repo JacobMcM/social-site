@@ -66,23 +66,30 @@ export default {
           this.$router.push('/home');
         },
         async pullUserFromUsername(username){
-          const users = this.fetchUsers();
+          const users = await this.fetchUsers();
 
-          users.forEach(user => {
-            if (user.userName === username){
-              return user
-            }
-          })
-          console.log("user does not exist");
+          const currUser = await fetch(`api/users?userName=${username}`)
+          console.log('inside pullfromusername:')
+          console.log(currUser);
+          return currUser
+
         },
-    toMainAccount(){
+    async toMainAccount(){
       const username = sessionStorage.getItem('username');
 
       console.log(username)
-
       const currUser = this.pullUserFromUsername(username)
 
-      this.$router.push(`/profile/${currUser.id}`)
+      console.log('inside tomainaccount:')
+      console.log(currUser)
+
+      /*
+      const currUser = await this.pullUserFromUsername(username)
+
+      console.log("curr user is");
+      await console.log(currUser)*/
+
+      //await this.$router.push(`/profile/${(this.pullUserFromUsername(username)).id}`)
     }
   },
   async created(){

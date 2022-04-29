@@ -72,6 +72,7 @@ export default {
         async likePost(data) {
             const newlikes = data.numLikes++
 
+            
             fetch(`api/posts/${data.id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({

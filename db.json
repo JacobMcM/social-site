@@ -71,6 +71,15 @@
       "followedByAccounts": {},
       "followingAccounts": {},
       "id": 8
+    },
+    {
+      "userName": "sex_machine",
+      "password": "sexysexylizard",
+      "accountId": "",
+      "avatar": "",
+      "followedByAccounts": {},
+      "followingAccounts": {},
+      "id": 9
     }
   ],
   "posts": [
@@ -81,7 +90,7 @@
       "postTitle": "omg look how stupid batman looks",
       "postContentType": "text",
       "postContent": "he was very stupid in his pjs lmfao ahahahahahah so fuunny looking",
-      "numLikes": 24,
+      "numLikes": 35,
       "numComments": 5,
       "comments": {}
     },
