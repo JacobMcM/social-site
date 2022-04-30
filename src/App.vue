@@ -65,31 +65,21 @@ export default {
         toHome(){
           this.$router.push('/home');
         },
-        async pullUserFromUsername(username){
-          const users = await this.fetchUsers();
-
-          const currUser = await fetch(`api/users?userName=${username}`)
-          console.log('inside pullfromusername:')
-          console.log(currUser);
+        async pullUserFromUsername(username){          
+          const userNameArr = await (await fetch(`api/users?userName=${username}`)).json()
+          const currUser = userNameArr.at(0)
           return currUser
-
         },
     async toMainAccount(){
       const username = sessionStorage.getItem('username');
 
       console.log(username)
-      const currUser = this.pullUserFromUsername(username)
 
-      console.log('inside tomainaccount:')
+      const currUser = await this.pullUserFromUsername(username)
+      
       console.log(currUser)
 
-      /*
-      const currUser = await this.pullUserFromUsername(username)
-
-      console.log("curr user is");
-      await console.log(currUser)*/
-
-      //await this.$router.push(`/profile/${(this.pullUserFromUsername(username)).id}`)
+      await this.$router.push(`/profile/${currUser.id}`)
     }
   },
   async created(){
