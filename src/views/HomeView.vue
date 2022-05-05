@@ -1,55 +1,14 @@
 <template>
     <div v-for="post in posts" :key="post.id">
-          
-        <v-app id="inspire">
-            <v-card
-            class="mx-auto"
-            color="#26c6da"
-            dark
-            max-width="400">
 
-                <v-card-title @click="toProfile">
-                    <!--<v-row justify="space-between">-->                
-                        <v-avatar color="indigo">
-                            <v-icon dark @click="toProfile">
-                                mdi-account-circle
-                            </v-icon>
-                        </v-avatar>
-                        <span class="mr-1"></span>
-                        <span class="text-h6 font-weight-light" @click="toProfile"> @{{ post.userAccountId }}</span>
-                        <span class="mr-1"></span>
-                        <v-btn flat color="secondary" @click="followAccount">Follow</v-btn>
-                    <!--</v-row>-->
-               </v-card-title>
-
-                <v-card-title>                    
-                    <span class="text-h6 font-weight-bold">{{ post.postTitle }}</span>
-               </v-card-title>
-  
-                <v-card-text class="text-h5 font-weight-bold">
-                    "{{ post.postContent }}"
-                </v-card-text>
-  
-                <v-card-actions>
-                    <v-list-item class="grow">
-                        
-                        <v-btn icon="mdi-heart" color="red" @click="likePost(post)"></v-btn>
-                        
-                        <span class="subheading mr-2">{{ post.numLikes }}</span>
-                        <span class="mr-1">·</span>
-
-                        <v-btn icon="mdi-comment" color="primary" @click="addComment(post)"></v-btn>
-                        
-                        <span class="subheading">{{ post.numComments }}</span>
-                    </v-list-item>
-
-                </v-card-actions>
-            </v-card>
-        </v-app>
+        <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" @addComment="addComment(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" :numComments="post.numComments"/>
+            
     </div>
 </template>
 
 <script>
+import Posts from '@/components/Posts'
+
 export default {
     name: 'Home',
     data() {
@@ -57,6 +16,9 @@ export default {
             users: [],
             posts: [],
         }
+    },
+    components: {
+        Posts
     },
     methods: {
         async fetchUsers() {

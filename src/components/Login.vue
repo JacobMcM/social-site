@@ -66,10 +66,9 @@ export default {
           const newUser = {
             userName: this.username,
             password: this.password,
-            accountId: "",
             avatar: "",
-            followedByAccounts: {},
-            followingAccounts: {}
+            followedByAccounts: [],
+            followingAccounts: []
           }
 
           this.addUser(newUser)

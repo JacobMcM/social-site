@@ -19,7 +19,10 @@ const routes = [
   },
   {
     path: '/profile/:id',
-    name: 'profile',
+    name: 'profile', //<-change back to this after test
+
+    /*path: '/profile',
+    name: "profile",*/ //<test code
     component: ()=> import('@/views/ProfileView.vue')
   },
   {

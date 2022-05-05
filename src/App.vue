@@ -20,17 +20,23 @@
         <v-btn icon="mdi-account-circle" @click="toMainAccount"></v-btn>
 
 
-
+ 
       </v-app-bar>
-
-      <v-main>
-        <v-container fluid>
+    
+      <v-main padding>
+        
+        <v-container fluid >
             <router-view/>
         </v-container>
       </v-main>
     </v-layout>
   </v-card>
+
+  
+
   </v-app>
+
+
 
 </template>
 
@@ -50,12 +56,13 @@ export default {
     },
     methods: {
         async fetchUsers() {
-            const res = await fetch('api/users')
+            
+            const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
             return data
         },
         async fetchPosts() {
-            const res = await fetch('api/posts')
+            const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
         },
@@ -80,6 +87,7 @@ export default {
       console.log(currUser)
 
       await this.$router.push(`/profile/${currUser.id}`)
+      //await this.$router.push('/profile')//<-trying to isolate issue
     }
   },
   async created(){

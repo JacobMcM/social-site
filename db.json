@@ -3,7 +3,6 @@
     {
       "userName": "richard",
       "password": "grayson",
-      "accountId": "theRealRobin",
       "avatar": "",
       "id": 1,
       "followedByAccounts": {},
@@ -12,7 +11,6 @@
     {
       "userName": "Barbara_gordon",
       "password": "jagcjsgjqyg6262",
-      "accountId": "OracleEyes",
       "avatar": "",
       "id": 2,
       "followedByAccounts": {},
@@ -21,7 +19,6 @@
     {
       "userName": "Alfred1",
       "password": "paswrod",
-      "accountId": "Proud_Butler_43",
       "avatar": "",
       "id": 3,
       "followedByAccounts": {},
@@ -30,7 +27,6 @@
     {
       "userName": "smogle",
       "password": "676767",
-      "accountId": "",
       "avatar": "",
       "followedByAccounts": {},
       "followingAccounts": {},
@@ -39,7 +35,6 @@
     {
       "userName": "Jeremy_Dixon",
       "password": "IM_DIxon",
-      "accountId": "",
       "avatar": "",
       "followedByAccounts": {},
       "followingAccounts": {},
@@ -48,7 +43,6 @@
     {
       "userName": "Mandro delreddi",
       "password": "shishkabab",
-      "accountId": "",
       "avatar": "",
       "followedByAccounts": {},
       "followingAccounts": {},
@@ -57,7 +51,6 @@
     {
       "userName": "margetTheOne",
       "password": "shshshshshhshshshs",
-      "accountId": "",
       "avatar": "",
       "followedByAccounts": {},
       "followingAccounts": {},
@@ -66,7 +59,6 @@
     {
       "userName": "sex_machine",
       "password": "sexysexylizard",
-      "accountId": "",
       "avatar": "",
       "followedByAccounts": {},
       "followingAccounts": {},
@@ -75,37 +67,104 @@
   ],
   "posts": [
     {
-      "userAccountId": "theRealRobin",
+      "userName": "theRealRobin",
       "userId": 1,
       "id": 1,
       "postTitle": "omg look how stupid batman looks",
-      "postContentType": "text",
       "postContent": "he was very stupid in his pjs lmfao ahahahahahah so fuunny looking",
-      "numLikes": 35,
+      "numLikes": 56,
       "numComments": 5,
-      "comments": {}
+      "comments": []
     },
     {
-      "userAccountId": "Barbara_gordon",
+      "userName": "Barbara_gordon",
       "userId": 2,
       "id": 2,
       "postTitle": "annother boring day",
-      "postContentType": "text",
       "postContent": "nothing ever evr ever ever ever ever happens anywhere auahuguagugaugauhahaugaugauha",
-      "numLikes": 20,
+      "numLikes": 21,
       "numComments": 4,
-      "comments": {}
+      "comments": []
     },
     {
-      "userAccountId": "Alfred1",
+      "userName": "Alfred1",
       "userId": 3,
       "id": 3,
       "postTitle": "I cleaned up annother of The Batman's messes today",
-      "postContentType": "text",
       "postContent": "this whole butler thing is beginning to... WAYNE on me",
       "numLikes": 600,
       "numComments": 1,
-      "comments": {}
+      "comments": []
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "I NEED CORNBREAD",
+      "postContent": "I NEED CORNBREAD RIGHT NOW",
+      "numLikes": 15,
+      "numComments": 0,
+      "comments": [],
+      "id": 4
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "I bought some fancy shoes",
+      "postContent": "they are very very fancy",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 5
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "jshgfjshgfjesgfjsgjfygjasygejygs",
+      "postContent": "cat on keyboard",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 6
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "Putin bad",
+      "postContent": "All my homies hate putin",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 7
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "Im testing the waters",
+      "postContent": "to see if my inbred no good, absolute bafoon useless, worthless, unloved, abomination camel can swim",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 8
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "that egiption cat is so cute",
+      "postContent": "Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by Camel by ",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 9
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "skhfskhfkusehufes",
+      "postContent": "ajdaljdoawjldajliwjad",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 10
     }
   ]
 }

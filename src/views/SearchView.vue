@@ -21,9 +21,7 @@
                     {{ user.userName }}
                 </template>
 
-                <v-card-subtitle>
-                    @{{ user.accountId }}
-                </v-card-subtitle>
+                
             </v-card>
         </div>
 
@@ -83,16 +81,17 @@ export default {
             users: [],
             posts: [],
             message1:'',
+            currUser: [],
         }
     },
     methods: {
         async fetchUsers() {
-            const res = await fetch('api/users')
+            const res = await fetch('/api/users')
             const data = await res.json()
             return data
         },
         async fetchPosts() {
-            const res = await fetch('api/posts')
+            const res = await fetch('/api/posts')
             const data = await res.json()
             return data
         },
@@ -103,11 +102,16 @@ export default {
 
             this.users = this.users.filter(name => {return name['userName'].indexOf(this.message1) >= 0 || name['accountId'].indexOf(this.message1) >= 0})
             this.posts = this.posts.filter(name => {return name['userAccountId'].indexOf(this.message1) >= 0 || name['postTitle'].indexOf(this.message1) >= 0 || name['postContent'].indexOf(this.message1) >= 0 })           
+        },
+        fetchCurrUser() {
+            const data = sessionStorage.getItem('currUser');
+            return data
         }
     },
     async created(){
-        this.users = await this.fetchUsers(),
+        this.users = await this.fetchUsers()
         this.posts = await this.fetchPosts()
+        this.currUser = this.fetchCurrUser()
     }
 }
 </script>
