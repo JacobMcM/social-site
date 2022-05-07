@@ -68,6 +68,17 @@
             </div>
 
             <div v-if="this.whichTab === 'followers'">
+                <!-- UNFINNISHED
+                <div :key="profileUserFollowers.length">
+                    <div v-for="user in profileUserFollowers" :key="profileUserFollowers">
+                        <User @toAccount="toAccount(user)" @followAccount="followAccount(post)" 
+                            :postTitle="post.postTitle" :userName="post.userName" 
+                            :postContent="post.postContent" :numLikes="post.numLikes" 
+                            :numComments="post.numComments"/>
+                    </div>
+                </div>
+                -->
+
                 <h1>Followers is Unfinshed</h1>
             </div>
 
