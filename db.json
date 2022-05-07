@@ -1,11 +1,13 @@
 {
   "users": [
     {
-      "userName": "richard",
+      "userName": "theRealRobin",
       "password": "grayson",
       "avatar": "",
       "id": 1,
-      "followedByAccounts": [],
+      "followedByAccounts": [
+        "Mandro delreddi"
+      ],
       "followingAccounts": []
     },
     {
@@ -45,7 +47,9 @@
       "password": "shishkabab",
       "avatar": "",
       "followedByAccounts": [],
-      "followingAccounts": [],
+      "followingAccounts": [
+        "theRealRobin"
+      ],
       "id": 6
     },
     {

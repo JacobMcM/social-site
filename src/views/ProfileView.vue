@@ -267,44 +267,52 @@ export default {
 
             if (!isAlreadyFollowing){
 
-                const currUserNewFollwing = currUser.followingAccounts.push(postUserName)
+                console.log(currUser.followingAccounts)
 
-                //const currUserNewFollwing = currUserOldFollowing.add(postUserName)
+                await currUser.followingAccounts.push(postUserName)
 
+                console.log(currUser.followingAccounts)
 
-
-                fetch(`http://localhost:5000/user/${this.currUser.id}`, {
+                //patch the currUser followingAccounts                
+                fetch(`http://localhost:5000/users/${currUser.id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({
-                    followingAccounts: currUserNewFollwing,
+                    followingAccounts: currUser.followingAccounts,
                 }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
-                },                
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
                 })
                 console.log("patching complete")
                 
+                //patch the postUser followedByAccounts
 
-                //patch the currUser followingAccounts
+                await postUser.followedByAccounts.push(currUser.userName)
 
+                fetch(`http://localhost:5000/users/${postUser.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    followedByAccounts: postUser.followedByAccounts,
+                }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
+                })
 
-                //patch the profileUser followedByAccounts
-
-
+                console.log("patching complete")
 
                 //update this.profileUserFollowers: [] & this.profileUserFollowing: [],
 
+                this.currUser = await this.fetchCurrUser()
+
+                //remove for non-profile pages !!!
+                this.profileUser = await this.fetchProfileUser()
+
+
+            }else{
+                console.log("you are already following them")
             }
             
-            /*fetch(`http://localhost:5000/posts/${data.id}`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    numLikes: newlikes,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
-                },
-            }) */ 
         }
     },
     async created(){        
