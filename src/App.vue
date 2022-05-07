@@ -73,7 +73,7 @@ export default {
           this.$router.push('/home');
         },
         async pullUserFromUsername(username){          
-          const userNameArr = await (await fetch(`api/users?userName=${username}`)).json()
+          const userNameArr = await (await fetch(`http://localhost:5000/users?userName=${username}`)).json()
           const currUser = userNameArr.at(0)
           return currUser
         },

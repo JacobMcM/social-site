@@ -5,63 +5,63 @@
       "password": "grayson",
       "avatar": "",
       "id": 1,
-      "followedByAccounts": {},
-      "followingAccounts": {}
+      "followedByAccounts": [],
+      "followingAccounts": []
     },
     {
       "userName": "Barbara_gordon",
       "password": "jagcjsgjqyg6262",
       "avatar": "",
       "id": 2,
-      "followedByAccounts": {},
-      "followingAccounts": {}
+      "followedByAccounts": [],
+      "followingAccounts": []
     },
     {
       "userName": "Alfred1",
       "password": "paswrod",
       "avatar": "",
       "id": 3,
-      "followedByAccounts": {},
-      "followingAccounts": {}
+      "followedByAccounts": [],
+      "followingAccounts": []
     },
     {
       "userName": "smogle",
       "password": "676767",
       "avatar": "",
-      "followedByAccounts": {},
-      "followingAccounts": {},
+      "followedByAccounts": [],
+      "followingAccounts": [],
       "id": 4
     },
     {
       "userName": "Jeremy_Dixon",
       "password": "IM_DIxon",
       "avatar": "",
-      "followedByAccounts": {},
-      "followingAccounts": {},
+      "followedByAccounts": [],
+      "followingAccounts": [],
       "id": 5
     },
     {
       "userName": "Mandro delreddi",
       "password": "shishkabab",
       "avatar": "",
-      "followedByAccounts": {},
-      "followingAccounts": {},
+      "followedByAccounts": [],
+      "followingAccounts": [],
       "id": 6
     },
     {
       "userName": "margetTheOne",
       "password": "shshshshshhshshshs",
       "avatar": "",
-      "followedByAccounts": {},
-      "followingAccounts": {},
+      "followedByAccounts": [],
+      "followingAccounts": [],
       "id": 8
     },
     {
       "userName": "sex_machine",
       "password": "sexysexylizard",
       "avatar": "",
-      "followedByAccounts": {},
-      "followingAccounts": {},
+      "followedByAccounts": [],
+      "followingAccounts": [],
       "id": 9
     }
   ],
@@ -72,7 +72,7 @@
       "id": 1,
       "postTitle": "omg look how stupid batman looks",
       "postContent": "he was very stupid in his pjs lmfao ahahahahahah so fuunny looking",
-      "numLikes": 56,
+      "numLikes": 61,
       "numComments": 5,
       "comments": []
     },
@@ -101,7 +101,7 @@
       "userId": 6,
       "postTitle": "I NEED CORNBREAD",
       "postContent": "I NEED CORNBREAD RIGHT NOW",
-      "numLikes": 15,
+      "numLikes": 18,
       "numComments": 0,
       "comments": [],
       "id": 4
@@ -165,6 +165,76 @@
       "numComments": 0,
       "comments": [],
       "id": 10
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "I've been hacked",
+      "postContent": "the people who hacked me are tring to sell crypto NOOOOOOOIQJOIAJLkejhfskunfsfsd-e please buy {Mandro} - coin today",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 11
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "xkhfskuhekshkusfehfkushekuhs",
+      "postContent": "oshjfkshrkehfsuohnfoiuwjhfowihoiuwhfouiwhweohwekss",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 12
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "iuhgjuygougfouygouygouygoug",
+      "postContent": "jygfif86fo7f0o76fp087tgp087fgp087tgp08gtp0",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 13
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "this is test 100",
+      "postContent": "slhfskhfskehfkushkusehfksuhsekuhsefkhfsek",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 14
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "test 101",
+      "postContent": "sikeshskeghfksuehgfkushekufhsekuhfkusehfkuhsekufhskeufhkseuh",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 15
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "test 103",
+      "postContent": "jygjygyujgyjgjygjyg",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 16
+    },
+    {
+      "userName": "Mandro delreddi",
+      "userId": 6,
+      "postTitle": "test 104",
+      "postContent": "slhfksehfkshkfehksefhkjsh",
+      "numLikes": 0,
+      "numComments": 0,
+      "comments": [],
+      "id": 17
     }
   ]
 }

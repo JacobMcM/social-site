@@ -22,12 +22,12 @@ export default {
     },
     methods: {
         async fetchUsers() {
-            const res = await fetch('api/users')
+            const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
             return data
         },
         async fetchPosts() {
-            const res = await fetch('api/posts')
+            const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
         },
@@ -35,7 +35,7 @@ export default {
             const newlikes = data.numLikes++
 
             
-            fetch(`api/posts/${data.id}`, {
+            fetch(`http://localhost:5000/posts/${data.id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({
                     numLikes: newlikes,
@@ -44,7 +44,11 @@ export default {
                     'Content-type': 'application/json; charset=UTF-8'
                 },
             })                        
-        }
+        },
+        toAccount(post){
+            const id = post.userId
+            this.$router.push(`/profile/${id}`)
+        },
     },
     async created(){
         this.users = await this.fetchUsers(),
