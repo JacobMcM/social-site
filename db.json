@@ -5,9 +5,7 @@
       "password": "grayson",
       "avatar": "",
       "id": 1,
-      "followedByAccounts": [
-        "Mandro delreddi"
-      ],
+      "followedByAccounts": [],
       "followingAccounts": []
     },
     {
@@ -52,7 +50,6 @@
         "margetTheOne"
       ],
       "followingAccounts": [
-        "theRealRobin",
         "Barbara_gordon"
       ],
       "id": 6

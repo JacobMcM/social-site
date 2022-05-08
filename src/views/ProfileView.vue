@@ -309,7 +309,7 @@ export default {
                     
                     currUser.followingAccounts.splice(followerIndex, 1)
 
-                    this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                    await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
                 }
             }
 
@@ -320,28 +320,28 @@ export default {
                     if (follower === currUser.userName){
                         postUser.followedByAccounts.splice(followerIndex, 1)
 
-                        this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                        await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
                     }
                 }
             }else{
 
                 console.log(currUser.followingAccounts)
 
-                await currUser.followingAccounts.push(postUserName)
+                currUser.followingAccounts.push(postUserName)
 
                 console.log(currUser.followingAccounts)
 
                 //patch the currUser followingAccounts
                 
-                this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
                 
                 console.log("patching complete")
                 
                 //patch the postUser followedByAccounts
 
-                await postUser.followedByAccounts.push(currUser.userName)
+                postUser.followedByAccounts.push(currUser.userName)
 
-                this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
                 
                 console.log("patching complete")
 

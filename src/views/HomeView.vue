@@ -85,6 +85,31 @@ export default {
             const id = post.userId
             this.$router.push(`/profile/${id}`)
         },
+        
+        async patchFollowers(user, changedDataSet, changedData){
+            if (changedDataSet === "followingAccounts"){
+                fetch(`http://localhost:5000/users/${user.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        followingAccounts: changedData,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
+                })
+            }else{
+                fetch(`http://localhost:5000/users/${user.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        followedByAccounts: changedData,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
+                })
+            }
+            this.filteredPosts = await this.filterPosts()
+        },
         async followAccount(post){
 
             let postUserName = ''
@@ -93,7 +118,7 @@ export default {
                 postUserName = post //format need for the different way users are rendered compared to posts
             }else{
                 postUserName = post.userName
-            }
+            }            
 
             const postUser = await this.pullDataFromSourceProp("users","userName", postUserName)
 
@@ -103,50 +128,57 @@ export default {
 
             console.log(currUser.followingAccounts)
 
-            //check if currUser is already following postUser
+            //check if currUser is already following postUser, then unfollow user
             for(let followerIndex in currUser.followingAccounts){
                 console.log(currUser.followingAccounts.at(followerIndex))
-                if (!isAlreadyFollowing && postUser.userName === currUser.followingAccounts.at(followerIndex)){
-                    console.log('we have a match: ' + postUser.userName + " and " + currUser.followingAccounts.at(followerIndex))
+                const follower = currUser.followingAccounts.at(followerIndex)
+
+                if (!isAlreadyFollowing && postUser.userName === follower){
                     isAlreadyFollowing = true
+                    
+                    currUser.followingAccounts.splice(followerIndex, 1)
+
+                    await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
                 }
             }
 
-            if (!isAlreadyFollowing){
-                await currUser.followingAccounts.push(postUserName)
+            if (isAlreadyFollowing){
+                for(let followerIndex in postUser.followedByAccounts){
+                    const follower = postUser.followedByAccounts.at(followerIndex)
 
-                //patch the currUser followingAccounts                
-                fetch(`http://localhost:5000/users/${currUser.id}`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    followingAccounts: currUser.followingAccounts,
-                }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8'
-                    },                
-                })
+                    if (follower === currUser.userName){
+                        postUser.followedByAccounts.splice(followerIndex, 1)
+
+                        await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                    }
+                }
+            }else{
+
+                console.log(currUser.followingAccounts)
+
+                currUser.followingAccounts.push(postUserName)
+
+                console.log(currUser.followingAccounts)
+
+                //patch the currUser followingAccounts
+                
+                await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                
                 console.log("patching complete")
                 
                 //patch the postUser followedByAccounts
 
-                await postUser.followedByAccounts.push(currUser.userName)
+                postUser.followedByAccounts.push(currUser.userName)
 
-                fetch(`http://localhost:5000/users/${postUser.id}`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    followedByAccounts: postUser.followedByAccounts,
-                }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8'
-                    },                
-                })
-
+                await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                
                 console.log("patching complete")
-            }else{
-                console.log("you are already following them")
+                
             }
-            
-        }
+
+
+            this.filteredPosts = await this.filterPosts()
+        },
     },
     async created(){
         this.users = await this.fetchUsers(),
