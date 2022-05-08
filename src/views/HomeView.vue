@@ -1,8 +1,8 @@
 <template>
-    <div v-for="post in posts" :key="post.id">
-
-        <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" @addComment="addComment(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" :numComments="post.numComments"/>
-            
+    <div :key="this.filteredPosts.length">
+        <div v-for="post in this.filteredPosts" :key="post.id">
+            <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" @addComment="addComment(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" :numComments="post.numComments"/>
+        </div>
     </div>
 </template>
 
@@ -15,6 +15,8 @@ export default {
         return {
             users: [],
             posts: [],
+
+            filteredPosts: [],
         }
     },
     components: {
@@ -30,6 +32,31 @@ export default {
             const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
+        },
+        async fetchCurrUser() {
+            const data = sessionStorage.getItem('username')            
+            return this.pullDataFromSourceProp("users","userName", data)
+        },
+        async filterPosts() {
+
+            let filteredPosts = []
+            const currUser = await this.fetchCurrUser()
+            console.log(currUser)
+
+            for (let postIndex in this.posts){
+                const post = this.posts.at(postIndex)
+                const postUserName = post.userName
+                for (let followingIndex in currUser.followingAccounts){
+                    const following = currUser.followingAccounts.at(followingIndex)
+                    if (following === postUserName){
+                        filteredPosts.push(post)
+                    }
+                }
+            }
+
+            console.log("filtereing done")
+            console.log(filteredPosts)
+            return filteredPosts
         },
         async likePost(data) {
             const newlikes = data.numLikes++
@@ -123,7 +150,11 @@ export default {
     },
     async created(){
         this.users = await this.fetchUsers(),
-        this.posts = await this.fetchPosts()
+        this.posts = await this.fetchPosts(),
+
+        this.filteredPosts = await this.filterPosts()
+        
+        
     }
 }
 </script>

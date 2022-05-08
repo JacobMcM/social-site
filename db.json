@@ -25,9 +25,7 @@
       "password": "paswrod",
       "avatar": "",
       "id": 3,
-      "followedByAccounts": [
-        "Mandro delreddi"
-      ],
+      "followedByAccounts": [],
       "followingAccounts": []
     },
     {
@@ -50,11 +48,12 @@
       "userName": "Mandro delreddi",
       "password": "shishkabab",
       "avatar": "",
-      "followedByAccounts": [],
+      "followedByAccounts": [
+        "margetTheOne"
+      ],
       "followingAccounts": [
         "theRealRobin",
-        "Barbara_gordon",
-        "Alfred1"
+        "Barbara_gordon"
       ],
       "id": 6
     },
@@ -63,7 +62,9 @@
       "password": "shshshshshhshshshs",
       "avatar": "",
       "followedByAccounts": [],
-      "followingAccounts": [],
+      "followingAccounts": [
+        "Mandro delreddi"
+      ],
       "id": 8
     },
     {
@@ -245,6 +246,16 @@
       "numComments": 0,
       "comments": [],
       "id": 17
+    },
+    {
+      "userName": "margetTheOne",
+      "userId": 8,
+      "postTitle": "im testing the sight",
+      "postContent": "very noice site, I like",
+      "numLikes": 7,
+      "numComments": 0,
+      "comments": [],
+      "id": 18
     }
   ]
 }
