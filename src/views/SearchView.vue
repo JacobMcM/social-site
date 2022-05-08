@@ -1,88 +1,48 @@
 <template>
     <v-app>
-        <v-text-field @input="updateSearch"
-            v-model="message1"
-            label="Regular"
-            
+        <v-text-field @keyup.enter="updateSearch"
+            v-model="searchMessage"
+            label="Search"            
         ></v-text-field>
 
-        <div v-for="user in users" :key="user.id">
-            <v-card
-                class="mx-auto"
-                width="400"
-                color="blue"
-            >
-                <template v-slot:title>
-                    <v-avatar color="indigo">
-                        <v-icon dark>
-                            mdi-account-circle
-                        </v-icon>
-                    </v-avatar>
-                    {{ user.userName }}
-                </template>
-
-                
-            </v-card>
+        <div v-if="!ready">
+            <h1>hello</h1>
         </div>
 
-        <div v-for="post in posts" :key="post.id">          
-            <v-app id="inspire">
-                <v-card
-                class="mx-auto"
-                color="#26c6da"
-                dark
-                max-width="400">
+        <div v-for="user in users" :key="user.id">
+            <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user.userName"/>         
+        </div>
 
-
-
-                    <v-card-title>                    
-                        <span class="text-h4 font-weight-bold">{{ post.postTitle }}</span>
-                    </v-card-title>
-
-                    <v-card-subtitle @click="toProfile">
-                        <v-avatar color="indigo">
-                            <v-icon dark>
-                                mdi-account-circle
-                            </v-icon>
-                        </v-avatar>
-                        <span class="text-h5 font-weight-light"> @{{ post.userAccountId }}</span>
-                    </v-card-subtitle>
-  
-                    <v-card-text class="text-h5 font-weight-bold">
-                        "{{ post.postContent }}"
-                    </v-card-text>
-  
-                    <v-card-actions>
-                        <v-list-item class="grow">
-                        
-                            <v-icon class="mr-1" @click="like">
-                                mdi-account-child-outline
-                            </v-icon>
-                            <span class="subheading mr-2">256</span>
-                            <span class="mr-1">·</span>
-                            <v-icon class="mr-1">
-                                mdi-share-variant
-                            </v-icon>
-                            <span class="subheading">45</span>
-                        </v-list-item>
-                    </v-card-actions>
-                </v-card>
-            </v-app>
+        <div v-for="post in posts" :key="post.id">
+            <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" 
+                @likePost="likePost(post)" @addComment="addComment(post)"
+                :postTitle="post.postTitle" :userName="post.userName" 
+                :postContent="post.postContent" :numLikes="post.numLikes" 
+                :numComments="post.numComments"/>
         </div>
         
     </v-app>
 </template>
 
 <script>
+import Posts from '@/components/Posts'
+import User from '@/components/Users'
+
 export default {
     name: 'Profile',
     data() {
         return {
             users: [],
             posts: [],
-            message1:'',
+            searchMessage:'',
             currUser: [],
+            ready: false
         }
+    },
+    components : {
+        Posts,
+        User
+
     },
     methods: {
         async fetchUsers() {
@@ -96,22 +56,156 @@ export default {
             return data
         },
         async updateSearch() {
-            console.log(this.message1)
+            console.log(this.searchMessage)
+
+            this.ready = false
             this.users = await this.fetchUsers()
             this.posts = await this.fetchPosts()
 
-            this.users = this.users.filter(name => {return name['userName'].indexOf(this.message1) >= 0 || name['accountId'].indexOf(this.message1) >= 0})
-            this.posts = this.posts.filter(name => {return name['userAccountId'].indexOf(this.message1) >= 0 || name['postTitle'].indexOf(this.message1) >= 0 || name['postContent'].indexOf(this.message1) >= 0 })           
+            this.users = this.users.filter(name => {return name.userName.indexOf(this.searchMessage) >= 0})
+            this.posts = this.posts.filter(name => {return name.userName.indexOf(this.searchMessage) >= 0 || name.postTitle.indexOf(this.searchMessage) >= 0 || name.postContent.indexOf(this.searchMessage) >= 0 })
+            this.ready = true      
         },
-        fetchCurrUser() {
-            const data = sessionStorage.getItem('currUser');
+        async fetchCurrUser() {
+            const data = sessionStorage.getItem('username')            
+            return this.pullDataFromSourceProp("users","userName", data)
+        },
+        async pullDataFromSourceProp(source, prop, searchTerm){
+            console.log(source + " and " + prop + " and " + searchTerm)
+
+            let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
+            if (source === "users"){
+                data = data.at(0)
+            }
             return data
+        },
+        async likePost(data) {
+            const newlikes = data.numLikes++
+
+            
+            fetch(`http://localhost:5000/posts/${data.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    numLikes: newlikes,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+            })                        
+        },
+        async toAccount(data){
+            if (typeof(data) === "string"){
+                const user = this.pullDataFromSourceProp("users",userName, data)
+                const id = user.id //format need for the different way users are rendered compared to posts
+            }else{
+                const id = data.userId
+            }
+
+            console.log(id)
+            this.$router.push(`/profile/${id}`)
+            this.$router.go()
+        },
+        async patchFollowers(user, changedDataSet, changedData){
+            if (changedDataSet === "followingAccounts"){
+                fetch(`http://localhost:5000/users/${user.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        followingAccounts: changedData,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
+                })
+            }else{
+                fetch(`http://localhost:5000/users/${user.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        followedByAccounts: changedData,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    },                
+                })
+            }
+        },
+        async followAccount(post){
+
+            let postUserName = ''
+
+            if (typeof(post) === "string"){
+                postUserName = post //format need for the different way users are rendered compared to posts
+            }else{
+                postUserName = post.userName
+            }            
+
+            const postUser = await this.pullDataFromSourceProp("users","userName", postUserName)
+
+            const currUser = await this.pullDataFromSourceProp("users","userName", sessionStorage.getItem('username'))
+
+            let isAlreadyFollowing = false
+
+            console.log(currUser.followingAccounts)
+
+            //check if currUser is already following postUser, then unfollow user
+            if (postUserName !== currUser.userName){//you can't follow or unfollow yourself
+                
+                for(let followerIndex in currUser.followingAccounts){
+                    console.log(currUser.followingAccounts.at(followerIndex))
+                    const follower = currUser.followingAccounts.at(followerIndex)
+
+                    if (!isAlreadyFollowing && postUser.userName === follower){
+                        isAlreadyFollowing = true
+                        
+                        currUser.followingAccounts.splice(followerIndex, 1)
+
+                        await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                    }
+                }
+
+                if (isAlreadyFollowing){
+                    for(let followerIndex in postUser.followedByAccounts){
+                        const follower = postUser.followedByAccounts.at(followerIndex)
+
+                        if (follower === currUser.userName){
+                            postUser.followedByAccounts.splice(followerIndex, 1)
+
+                            await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                        }
+                    }
+                }else{
+
+                    console.log(currUser.followingAccounts)
+
+                    currUser.followingAccounts.push(postUserName)
+
+                    console.log(currUser.followingAccounts)
+
+                    //patch the currUser followingAccounts
+                    
+                    await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                    
+                    console.log("patching complete")
+                    
+                    //patch the postUser followedByAccounts
+
+                    postUser.followedByAccounts.push(currUser.userName)
+
+                    await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                    
+                    console.log("patching complete")
+
+                    //update this.profileUserFollowers: [] & this.profileUserFollowing: [],
+                }
+
+                this.currUser = await this.fetchCurrUser()  
+            }          
         }
     },
     async created(){
         this.users = await this.fetchUsers()
         this.posts = await this.fetchPosts()
         this.currUser = this.fetchCurrUser()
+        this.ready = true
     }
 }
 </script>

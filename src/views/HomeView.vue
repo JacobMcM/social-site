@@ -129,55 +129,58 @@ export default {
             console.log(currUser.followingAccounts)
 
             //check if currUser is already following postUser, then unfollow user
-            for(let followerIndex in currUser.followingAccounts){
-                console.log(currUser.followingAccounts.at(followerIndex))
-                const follower = currUser.followingAccounts.at(followerIndex)
+            if (postUserName !== currUser.userName){//you can't follow or unfollow yourself
+            
+                for(let followerIndex in currUser.followingAccounts){
+                    console.log(currUser.followingAccounts.at(followerIndex))
+                    const follower = currUser.followingAccounts.at(followerIndex)
 
-                if (!isAlreadyFollowing && postUser.userName === follower){
-                    isAlreadyFollowing = true
-                    
-                    currUser.followingAccounts.splice(followerIndex, 1)
+                    if (!isAlreadyFollowing && postUser.userName === follower){
+                        isAlreadyFollowing = true
+                        
+                        currUser.followingAccounts.splice(followerIndex, 1)
 
-                    await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
-                }
-            }
-
-            if (isAlreadyFollowing){
-                for(let followerIndex in postUser.followedByAccounts){
-                    const follower = postUser.followedByAccounts.at(followerIndex)
-
-                    if (follower === currUser.userName){
-                        postUser.followedByAccounts.splice(followerIndex, 1)
-
-                        await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                        await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
                     }
                 }
-            }else{
 
-                console.log(currUser.followingAccounts)
+                if (isAlreadyFollowing){
+                    for(let followerIndex in postUser.followedByAccounts){
+                        const follower = postUser.followedByAccounts.at(followerIndex)
 
-                currUser.followingAccounts.push(postUserName)
+                        if (follower === currUser.userName){
+                            postUser.followedByAccounts.splice(followerIndex, 1)
 
-                console.log(currUser.followingAccounts)
+                            await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                        }
+                    }
+                }else{
 
-                //patch the currUser followingAccounts
-                
-                await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
-                
-                console.log("patching complete")
-                
-                //patch the postUser followedByAccounts
+                    console.log(currUser.followingAccounts)
 
-                postUser.followedByAccounts.push(currUser.userName)
+                    currUser.followingAccounts.push(postUserName)
 
-                await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
-                
-                console.log("patching complete")
-                
+                    console.log(currUser.followingAccounts)
+
+                    //patch the currUser followingAccounts
+                    
+                    await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
+                    
+                    console.log("patching complete")
+                    
+                    //patch the postUser followedByAccounts
+
+                    postUser.followedByAccounts.push(currUser.userName)
+
+                    await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
+                    
+                    console.log("patching complete")
+                    
+                }
+
+
+                this.filteredPosts = await this.filterPosts()
             }
-
-
-            this.filteredPosts = await this.filterPosts()
         },
     },
     async created(){
