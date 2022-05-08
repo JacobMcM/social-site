@@ -87,6 +87,7 @@ export default {
       console.log(currUser)
 
       await this.$router.push(`/profile/${currUser.id}`)
+      this.$router.go()
       //await this.$router.push('/profile')//<-trying to isolate issue
     }
   },

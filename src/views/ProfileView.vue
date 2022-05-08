@@ -68,22 +68,21 @@
             </div>
 
             <div v-if="this.whichTab === 'followers'">
-                <!-- UNFINNISHED
+                
                 <div :key="profileUserFollowers.length">
-                    <div v-for="user in profileUserFollowers" :key="profileUserFollowers">
-                        <User @toAccount="toAccount(user)" @followAccount="followAccount(post)" 
-                            :postTitle="post.postTitle" :userName="post.userName" 
-                            :postContent="post.postContent" :numLikes="post.numLikes" 
-                            :numComments="post.numComments"/>
+                    <div v-for="user in profileUserFollowers" :key="user.id">
+                        <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user"/>
                     </div>
                 </div>
-                -->
-
-                <h1>Followers is Unfinshed</h1>
+                
             </div>
 
             <div v-if="this.whichTab === 'following'">
-                <h1>Followers is Unfinshed</h1>
+                <div :key="profileUserFollowing.length">
+                    <div v-for="user in profileUserFollowing" :key="user.id">
+                        <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user"/>
+                    </div>
+                </div>
             </div>
         </div>
       
@@ -115,6 +114,7 @@
 
 <script>
 import Posts from '@/components/Posts'
+import User from '@/components/Users'
 
 export default {
     name: 'Profile',
@@ -143,10 +143,14 @@ export default {
         }
     },
     components : {
-        Posts
+        Posts,
+        User
 
     },
     methods: {
+        test(data){
+            console.log(data)
+        },
         async fetchUsers() {
             const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
@@ -156,7 +160,7 @@ export default {
             const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
-        },
+        },/*
         async updateSearch() {
             console.log(this.message1)
             this.users = await this.fetchUsers()
@@ -166,7 +170,7 @@ export default {
             name['accountId'].indexOf(this.message1) >= 0})
             this.posts = this.posts.filter(name => {return name['userName'].indexOf(this.message1) >= 0 || 
             name['postTitle'].indexOf(this.message1) >= 0 || name['postContent'].indexOf(this.message1) >= 0 })           
-        },
+        },*/
         async makePost(){
             console.log(this.postTitle)
             console.log(this.postContent)
@@ -188,7 +192,7 @@ export default {
             console.log(this.profileUserPosts)
             
             const id = this.$route.params.id
-            this.profileUserPosts = await this.pullPostsFromProp("userId", id)
+            this.profileUserPosts = await this.pullDataFromSourceProp("posts", "userId", id)
             
             console.log(this.profileUserPosts)
 
@@ -209,13 +213,13 @@ export default {
         },
         fetchCurrUser() {
             const data = sessionStorage.getItem('username')            
-            return this.pullUserFromProp("userName", data)
+            return this.pullDataFromSourceProp("users","userName", data)
         },
         async fetchProfileUser(){
             const id = this.$route.params.id
-            const profileUser = await this.pullUserFromProp("id", id)
+            const profileUser = await this.pullDataFromSourceProp("users","id", id)
             this.profileUserId = id
-            this.profileUserPosts = await this.pullPostsFromProp("userId", id)
+            this.profileUserPosts = await this.pullDataFromSourceProp("posts","userId", id)
             this.profileUserFollowers = profileUser.followedByAccounts
             this.profileUserFollowing = profileUser.followingAccounts
             return profileUser
@@ -229,15 +233,14 @@ export default {
         isFollowing(){
             this.whichTab = 'following'
         },
-        async pullUserFromProp(prop, searchTerm){
-            const userArr = await (await fetch(`http://localhost:5000/users?${prop}=${searchTerm}`)).json()
-            const user = userArr.at(0)
-            return user
-        },
-        async pullPostsFromProp(prop, searchTerm){
-            console.log(prop + " and " + searchTerm)
-            const postArr = await (await fetch(`http://localhost:5000/posts?${prop}=${searchTerm}`)).json()
-            return postArr
+        async pullDataFromSourceProp(source, prop, searchTerm){
+            console.log(source + " and " + prop + " and " + searchTerm)
+
+            let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
+            if (source === "users"){
+                data = data.at(0)
+            }
+            return data
         },
         async likePost(data) {
             const newlikes = data.numLikes++
@@ -253,25 +256,41 @@ export default {
                 },
             })                        
         },
-        toAccount(post){
-            const id = post.userId
+        async toAccount(data){
+            if (typeof(data) === "string"){
+                const user = this.pullDataFromSourceProp("users",userName, data)
+                const id = user.id //format need for the different way users are rendered compared to posts
+            }else{
+                const id = data.userId
+            }
+
+            console.log(id)
             this.$router.push(`/profile/${id}`)
+            this.$router.go()
         },
         async followAccount(post){
-            const postUserName = post.userName
 
-            const postUser = await this.pullUserFromProp("userName", postUserName)
+            let postUserName = ''
 
-            const currUser = await this.pullUserFromProp("userName", sessionStorage.getItem('username'))
+            if (typeof(post) === "string"){
+                postUserName = post //format need for the different way users are rendered compared to posts
+            }else{
+                postUserName = post.userName
+            }
 
-            const isAlreadyFollowing = false
+            const postUser = await this.pullDataFromSourceProp("users","userName", postUserName)
 
-            console.log("username is: " + postUser.userName)
+            const currUser = await this.pullDataFromSourceProp("users","userName", sessionStorage.getItem('username'))
+
+            let isAlreadyFollowing = false
+
+            console.log(currUser.followingAccounts)
+
             //check if currUser is already following postUser
-            for(followingUserName in currUser.followingAccounts){
-                console.log(followingUserName)
-                if (!isAlreadyFollowing && postUser.userName === followingUserName){
-                    console.log('we have a match: ' + postUser.userName + " and " + followingUserName)
+            for(let followerIndex in currUser.followingAccounts){
+                console.log(currUser.followingAccounts.at(followerIndex))
+                if (!isAlreadyFollowing && postUser.userName === currUser.followingAccounts.at(followerIndex)){
+                    console.log('we have a match: ' + postUser.userName + " and " + currUser.followingAccounts.at(followerIndex))
                     isAlreadyFollowing = true
                 }
             }

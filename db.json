@@ -15,7 +15,9 @@
       "password": "jagcjsgjqyg6262",
       "avatar": "",
       "id": 2,
-      "followedByAccounts": [],
+      "followedByAccounts": [
+        "Mandro delreddi"
+      ],
       "followingAccounts": []
     },
     {
@@ -23,7 +25,9 @@
       "password": "paswrod",
       "avatar": "",
       "id": 3,
-      "followedByAccounts": [],
+      "followedByAccounts": [
+        "Mandro delreddi"
+      ],
       "followingAccounts": []
     },
     {
@@ -48,7 +52,9 @@
       "avatar": "",
       "followedByAccounts": [],
       "followingAccounts": [
-        "theRealRobin"
+        "theRealRobin",
+        "Barbara_gordon",
+        "Alfred1"
       ],
       "id": 6
     },

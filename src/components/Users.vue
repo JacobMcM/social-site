@@ -2,14 +2,16 @@
     <v-app id="inspire">
         <v-card
         width="400"
+        color="purple"
         >
-            <template v-slot:title class="mx-1">
+            <template v-slot:title class="my-1">
                 <v-avatar color="indigo" @click="toAccount">
                     <v-icon dark>
                         mdi-account-circle
                     </v-icon>
                 </v-avatar>
-                <span class="text-h7 font-weight-light" @click="toAccount">{{ userName }}</span>
+                {{ userName }}
+                <!--<span class="text-h7 font-weight-light" @click="toAccount">{{ userName }}</span>-->
                 <v-btn flat color="secondary" @click="followAccount">Follow</v-btn>
             </template>
         </v-card>
