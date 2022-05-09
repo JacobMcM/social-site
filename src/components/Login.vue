@@ -37,6 +37,8 @@ export default {
     };
   },
   methods: {
+    
+    //return Users from db.json
     async fetchUsers() {
       const res = await fetch('api/users')
       const data = await res.json()
@@ -50,15 +52,20 @@ export default {
       let wrongPassword = false
 
       users.forEach(user => {
+        //if the entered username and password are correct, the user becomes currUser and is signed in
         if (user.userName === this.username && user.password === this.password){
           sessionStorage.setItem("username", this.username);
           this.$router.push('/home');
-        }else if(user.userName === this.username && user.password !== this.password){
+        }
+        //if the entered username is correct but the password is not, wrong password is true
+        else if(user.userName === this.username && user.password !== this.password){
           confirm('The Password You have entered is incorrect. Please try again')
           wrongPassword = true;
         }
       })
 
+
+      //makes a new user only if the current user is empty and the login attempt didn't find a vallid user
       if (!wrongPassword ){
         if ( !sessionStorage.getItem('username') || sessionStorage.getItem('username') === ""){
           if (confirm('This user does not exist. Would you like to create a new Account?')) {

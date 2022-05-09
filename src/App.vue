@@ -4,6 +4,8 @@
     class="mx-auto"
     max-width="448"
   >
+
+    <!--this drawer is called when the profile button is presson the navBar-->
     <v-layout>
       <v-navigation-drawer
         v-model="drawer"
@@ -90,48 +92,65 @@ export default {
     name: 'Profile',
     data() {
         return {
+
+          //tracks if the drawer should be rendered
             drawer: false,
+
             group: null,
+
+            //a local copy of users from db.json
             users: [],
+            //a local copy of posts from db.json
             posts: [],
         }
     },
     methods: {
+        //return Users from db.json
         async fetchUsers() {
-            
             const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
             return data
         },
+        //return Posts from db.json
         async fetchPosts() {
             const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
         },
+
+        //send to search page
         toSearch(){
           this.$router.push('/search');
         },
+
+        //send to home page
         toHome(){
           this.$router.push('/home');
         },
+
+        //when fed a username, this will return the full user associated with it
         async pullUserFromUsername(username){          
           const userNameArr = await (await fetch(`http://localhost:5000/users?userName=${username}`)).json()
           const currUser = userNameArr.at(0)
           return currUser
         },
-    async toMainAccount(){
-      const username = sessionStorage.getItem('username');
 
-      const currUser = await this.pullUserFromUsername(username)
+        //send to the account page of the main user
+        async toMainAccount(){
+          const username = sessionStorage.getItem('username');
 
-      await this.$router.push(`/profile/${currUser.id}`)
-      this.$router.go()
-      //await this.$router.push('/profile')//<-trying to isolate issue
-    },
-    signOut(){
-      sessionStorage.setItem("username", "")
-      this.$router.push('/login')
-    }
+          const currUser = await this.pullUserFromUsername(username)
+
+          await this.$router.push(`/profile/${currUser.id}`)
+          this.$router.go()
+          //await this.$router.push('/profile')//<-trying to isolate issue
+        },
+
+        //logs out the curruser by removing the sessionstorage data
+        signOut(){
+          sessionStorage.setItem("username", "")
+          this.$router.push('/login')
+        }
   },
   async created(){
     this.users = await this.fetchUsers(),

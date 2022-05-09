@@ -7,7 +7,6 @@
         >
             <v-card-title class="d-flex justify-space-between mb-6">
                         <span @click="toAccount">{{ userName }} </span>
-                        <!--<span class="text-h7 font-weight-light" @click="toAccount">{{ userName }}</span>-->
                         <v-btn flat color="#afb8c1" @click="followAccount">Follow</v-btn>
             </v-card-title>
         </v-card>

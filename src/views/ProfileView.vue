@@ -1,6 +1,7 @@
 <template>
     <v-app max-width="400">
-            
+        
+        <!--The "ready" variable is used to determine of the current page is finnished loading all data-->
         <div v-if="ready">
             <card
             theme="dark"
@@ -14,7 +15,8 @@
             background-color="orange"
             theme="dark"
             width="400"
-            >
+            >   
+                <!--the currUser can switch between these three tabs-->
                 <v-tab @click="isPosts" class="posts">
                     Posts
                 </v-tab>
@@ -26,6 +28,7 @@
                 </v-tab>
             </v-tabs>
 
+            <!--if the current user and the profile user are the same the operator can use this page to make a post-->
             <div v-if="this.currUser.id === this.profileUser.id">
                 <v-btn block @click="this.isMakePost = !this.isMakePost">
                 Make a Post
@@ -118,22 +121,32 @@ export default {
     name: 'Profile',
     data() {
         return {
+            //a local copy of users from db.json
             users: [],
+            //a local copy of posts from db.json
             posts: [],
 
+            //kees track of which tab is currently selected
             whichTab: 'posts',
+
+            //keeps track of whether the user has the makePosts tray open
             isMakePost: false,
 
+            //a local copy of the profileUser's data
             profileUser: [],
             profileUserId: 0,
             profileUserPosts: [],
             profileUserFollowers: [],
             profileUserFollowing: [],
             
+            //a local copy of the current User
             currUser: [],
 
+            
+            //used to determine if the page is done loading or "ready"
             ready: false,
 
+            //the values which store the values of the in-progress post
             postTitle: "",
             postContent: "",
         }
@@ -144,16 +157,20 @@ export default {
 
     },
     methods: {
+        //return Users from db.json
         async fetchUsers() {
             const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
             return data
         },
+        //return Posts from db.json
         async fetchPosts() {
             const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
         },
+
+        //takes the data from the makePost form, creates a new post from that data, and sends this new post to addPost
         async makePost(){
             
             const newPost = {
@@ -173,6 +190,8 @@ export default {
             this.postContent = ""
             this.isMakePost = false
         },
+
+        //adds the post to db.json
         async addPost(post) {
             const res = await fetch('http://localhost:5000/posts', {
                 method: 'POST',
@@ -182,10 +201,14 @@ export default {
                 body: JSON.stringify(post),
             })
         },
+
+        //return current User by pulling from the sessionStorage and feeding that data into "this.pullDataFromSourceProp"
         async fetchCurrUser() {
             const data = sessionStorage.getItem('username')            
             return this.pullDataFromSourceProp("users","userName", data)
         },
+
+        //finds and assigns all associated data arround this.profileUser 
         async fetchProfileUser(){
             const id = this.$route.params.id
             const profileUser = await this.pullDataFromSourceProp("users","id", id)
@@ -195,6 +218,8 @@ export default {
             this.profileUserFollowing = profileUser.followingAccounts
             return profileUser
         },
+
+        //these three are used to change which tab is being viewed
         isPosts() {
             this.whichTab = 'posts'
         },
@@ -204,6 +229,8 @@ export default {
         isFollowing(){
             this.whichTab = 'following'
         },
+
+        //will return a specific user or post (aka the source), by feeding a property (aka prop) of the source (such as id or userName) and the value (aka searchterm) of said property (such as 4 or "carl")
         async pullDataFromSourceProp(source, prop, searchTerm){
 
             let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
@@ -212,6 +239,8 @@ export default {
             }
             return data
         },
+
+        //take the current number of likes a post has and add one, then update the post in db.json with this new value
         async likePost(data) {
             const newlikes = data.numLikes++
 
@@ -226,6 +255,8 @@ export default {
                 },
             })                        
         },
+
+        //used to send to the account linked with a post or user
         async toAccount(data){
 
             let id = 0
@@ -240,8 +271,12 @@ export default {
             }
 
             await this.$router.push(`/profile/${id}`)
+
+            //if a user attempts to go from one profile to annother, the router wont automatically re-render the page, so im forced to refresh
             this.$router.go()
         },
+
+        //used by "this.followAccount" to patch changed data into db.json
         async patchFollowers(user, changedDataSet, changedData){
             if (changedDataSet === "followingAccounts"){
                 fetch(`http://localhost:5000/users/${user.id}`, {
@@ -265,6 +300,8 @@ export default {
                 })
             }
         },
+
+        //determines the currUser and postUser and updates their followingAccounts and followedByAccounts respectivly
         async followAccount(post){
 
             let postUserName = ''
@@ -338,6 +375,7 @@ export default {
         this.currUser = await this.fetchCurrUser()
         this.profileUser = await this.fetchProfileUser()
 
+        //when everything is done the page becomes "ready"
         this.ready = true
     
 

@@ -1,4 +1,6 @@
 <template>
+
+    <!--The "ready" variable is used to determine of the current page is finnished loading all data-->
     <div v-if="!ready">
         <v-progress-circular
             :size="70"
@@ -8,6 +10,8 @@
         ></v-progress-circular>        
     </div>
     <div v-else :key="this.filteredPosts.length">
+
+        <!--if a new user doesnt follow anybody, their homepage would be blank, if so this is redered to remind the new user to check the search page-->
         <div v-if="isFirstTimeUser">
             <v-card
                 class="mx-auto"
@@ -40,6 +44,7 @@
             </v-card>
         </div>
 
+        <!--renders all posts within the filtered list of posts from users the currUser follows-->
         <div v-for="post in this.filteredPosts" :key="post.id">
             <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" />
         </div>
@@ -53,13 +58,19 @@ export default {
     name: 'Home',
     data() {
         return {
+
+            //a local copy of users from db.json
             users: [],
+            //a local copy of posts from db.json
             posts: [],
 
+            //a filterd list of posts from users that the currUser Follows
             filteredPosts: [],
 
+            //a variable for if the current user is not following anyone, as if they were a first time user
             isFirstTimeUser: false,
 
+            //used to determine if the page is done loading or "ready"
             ready: false
 
         }
@@ -68,20 +79,28 @@ export default {
         Posts
     },
     methods: {
+
+        //return Users from db.json
         async fetchUsers() {
             const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
             return data
         },
+
+        //return Posts from db.json
         async fetchPosts() {
             const res = await fetch('http://localhost:5000/posts')
             const data = await res.json()
             return data
         },
+
+        //return current User by pulling from the sessionStorage and feeding that data into "this.pullDataFromSourceProp"
         async fetchCurrUser() {
             const data = sessionStorage.getItem('username')         
             return this.pullDataFromSourceProp("users","userName", data)
         },
+
+        //check every post, if the post has the same author as someone the currUser follows then the post gets added to the filterd list.
         async filterPosts() {
 
             let filteredPosts = []
@@ -98,11 +117,14 @@ export default {
                 }
             }
             
+            //if filteredList returns empty, the user will be a firstTimeUser
             if (filteredPosts.length === 0){
                 this.isFirstTimeUser = true
             }
             return filteredPosts
         },
+
+        //take the current number of likes a post has and add one, then update the post in db.json with this new value
         async likePost(data) {
             const newlikes = data.numLikes++
 
@@ -117,6 +139,8 @@ export default {
                 },
             })                        
         },
+
+        //will return a specific user or post (aka the source), by feeding a property (aka prop) of the source (such as id or userName) and the value (aka searchterm) of said property (such as 4 or "carl")
         async pullDataFromSourceProp(source, prop, searchTerm){
 
             let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
@@ -125,6 +149,8 @@ export default {
             }
             return data
         },
+
+        //used to send to the account linked with a post or user
         async toAccount(data){
             let id = 0
 
@@ -136,9 +162,12 @@ export default {
 
             this.$router.push(`/profile/${id}`)
         },
+        //send to search page
         toSearch(){
           this.$router.push('/search');
-        },        
+        },
+        
+        //used by "this.followAccount" to patch changed data into db.json
         async patchFollowers(user, changedDataSet, changedData){
             if (changedDataSet === "followingAccounts"){
                 fetch(`http://localhost:5000/users/${user.id}`, {
@@ -163,6 +192,8 @@ export default {
             }
             this.filteredPosts = await this.filterPosts()
         },
+
+        //determines the currUser and postUser and updates their followingAccounts and followedByAccounts respectivly
         async followAccount(post){
 
             let postUserName = ''
@@ -231,6 +262,7 @@ export default {
 
         this.filteredPosts = await this.filterPosts(),
 
+        //when everything is done the page becomes "ready"
         this.ready = true 
         
     }
