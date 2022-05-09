@@ -2,10 +2,16 @@
     <v-app max-width="400">
             
         <div v-if="ready">
-
+            <card
+            theme="dark"
+            >
+                <v-card-title class="bg-orange">
+                    <span>{{ this.currUser.userName }}</span>
+                </v-card-title>
+            </card>
             <v-tabs
             fixed-tabs
-            background-color="indigo-darken-2"
+            background-color="orange"
             theme="dark"
             width="400"
             >
@@ -66,8 +72,7 @@
                 
             </div>
 
-            <div v-if="this.whichTab === 'followers'">
-                
+            <div v-if="this.whichTab === 'followers'">                
                 <div :key="profileUserFollowers.length">
                     <div v-for="user in profileUserFollowers" :key="user.id">
                         <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user"/>
@@ -231,11 +236,16 @@ export default {
             })                        
         },
         async toAccount(data){
-            if (typeof(data) === "string"){
-                const user = this.pullDataFromSourceProp("users",userName, data)
-                const id = user.id //format need for the different way users are rendered compared to posts
-            }else{
-                const id = data.userId
+            console.log(data)
+
+            console.log(typeof(data.userId))
+
+            let id = 0
+
+            if (typeof(data.userId) === "undefined"){//aka if its a User
+                id = data.id
+            }else{//aka if its a post
+                id = data.userId
             }
 
             console.log(id)

@@ -131,8 +131,20 @@ export default {
             }
             return data
         },
-        toAccount(post){
-            const id = post.userId
+        async toAccount(data){
+            console.log(data)
+
+            console.log(typeof(data.userId))
+
+            let id = 0
+
+            if (typeof(data.userId) === "undefined"){//aka if its a User
+                id = data.id
+            }else{//aka if its a post
+                id = data.userId
+            }
+
+            console.log(id)
             this.$router.push(`/profile/${id}`)
         },
         toSearch(){

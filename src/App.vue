@@ -30,7 +30,7 @@
     
       <v-main padding>
         
-        <v-container fluid color="black">
+        <v-container fluid background-color="black">
             <router-view/>
         </v-container>
       </v-main>

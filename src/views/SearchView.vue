@@ -100,16 +100,20 @@ export default {
             })                        
         },
         async toAccount(data){
-            if (typeof(data) === "string"){
-                const user = this.pullDataFromSourceProp("users",userName, data)
-                const id = user.id //format need for the different way users are rendered compared to posts
-            }else{
-                const id = data.userId
+            console.log(data)
+
+            console.log(typeof(data.userId))
+
+            let id = 0
+
+            if (typeof(data.userId) === "undefined"){//aka if its a User
+                id = data.id
+            }else{//aka if its a post
+                id = data.userId
             }
 
             console.log(id)
             this.$router.push(`/profile/${id}`)
-            this.$router.go()
         },
         async patchFollowers(user, changedDataSet, changedData){
             if (changedDataSet === "followingAccounts"){
