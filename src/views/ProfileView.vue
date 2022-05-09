@@ -1,24 +1,24 @@
 <template>
     <v-app max-width="400">
-    
-        <v-tabs
-        fixed-tabs
-        background-color="indigo-darken-2"
-        theme="dark"
-        width="400"
-        >
-            <v-tab @click="isPosts" class="posts">
-                Posts
-            </v-tab>
-            <v-tab @click="isFollowers" class="followers">
-                Followers
-            </v-tab>
-            <v-tab @click="isFollowing" class="following">
-                Following
-            </v-tab>
-        </v-tabs>
-        
+            
         <div v-if="ready">
+
+            <v-tabs
+            fixed-tabs
+            background-color="indigo-darken-2"
+            theme="dark"
+            width="400"
+            >
+                <v-tab @click="isPosts" class="posts">
+                    Posts
+                </v-tab>
+                <v-tab @click="isFollowers" class="followers">
+                    Followers
+                </v-tab>
+                <v-tab @click="isFollowing" class="following">
+                    Following
+                </v-tab>
+            </v-tabs>
 
             <div v-if="this.currUser.id === this.profileUser.id">
                 <v-btn block @click="this.isMakePost = !this.isMakePost">
@@ -87,25 +87,12 @@
         </div>
       
         <div v-else>
-            <v-progress-linear
-                indeterminate
-                color="yellow darken-2"
-            ></v-progress-linear>
-            <br>
-            <v-progress-linear
-                indeterminate
-                color="green"
-            ></v-progress-linear>
-            <br>
-            <v-progress-linear
-                indeterminate
-                color="teal"
-            ></v-progress-linear>
-            <br>
-            <v-progress-linear
-                indeterminate
-                color="cyan"
-            ></v-progress-linear>
+            <v-progress-circular
+            :size="70"
+            :width="7"
+            color="orange"
+            indeterminate
+            ></v-progress-circular>   
         </div>
         
 

@@ -11,9 +11,7 @@
       >
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="toHome"></v-app-bar-nav-icon>
-        </template>
-
-        
+        </template>       
 
         
         <v-btn icon="mdi-magnify" @click="toSearch"></v-btn>

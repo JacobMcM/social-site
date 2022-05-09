@@ -52,16 +52,13 @@ export default {
       users.forEach(user => {
         if (user.userName === this.username && user.password === this.password){
           console.log("found a match");
-
-          sessionStorage.setItem("currUser", JSON.stringify(user));
           sessionStorage.setItem("username", this.username);
           this.$router.push('/home');
         }
       })
 
-      console.log(sessionStorage.getItem('currUser'))
 
-      if (!sessionStorage.getItem('currUser') || sessionStorage.getItem('currUser') === ""){
+      if (!sessionStorage.getItem('username') || sessionStorage.getItem('username') === ""){
         if (confirm('This user does not exist. Would you like to create a new Account?')) {
           const newUser = {
             userName: this.username,
@@ -75,14 +72,17 @@ export default {
 
           console.log("adding the new")
 
-          sessionStorage.setItem("currUser", JSON.stringify(newUser));
           sessionStorage.setItem("username", this.username);
-          this.$router.push('/home');           
+
+           
+
+          console.log("push dumb")
+          this.$router.push('/home')           
         }
       }
       this.username = "";
       this.password = "";
-      },
+    },
       async addUser(user) {
         const res = await fetch('api/users', {
           method: 'POST',

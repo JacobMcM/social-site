@@ -30,13 +30,7 @@ const routes = [
     name: 'search',
     component: ()=> import('@/views/SearchView.vue')
   },
-  {
-    path: '/settings/',
-    name: 'settings',
-    component: ()=> import('@/views/SettingsView.vue')
-  },
-  
-  
+    
 ]
 
 const router = createRouter({
@@ -47,7 +41,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   if (
     // make sure the user is authenticated
-    sessionStorage.getItem("currUser") == null && to.name !== 'Login'
+    sessionStorage.getItem("username") === null && to.name !== 'Login'
   ) {
     // redirect the user to the login page
     return { name: 'Login' }

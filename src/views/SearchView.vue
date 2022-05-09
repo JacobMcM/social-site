@@ -1,26 +1,33 @@
 <template>
     <v-app>
+
         <v-text-field @keyup.enter="updateSearch"
             v-model="searchMessage"
-            label="Search"            
-        ></v-text-field>
-
+            label="Search"
+            width="400"           
+         ></v-text-field>
         <div v-if="!ready">
-            <h1>hello</h1>
+            <v-progress-circular
+                :size="70"
+                :width="7"
+                color="orange"
+                indeterminate
+            ></v-progress-circular>        
         </div>
+        <div v-else>
+            
+            <div v-for="user in users" :key="user.id">
+                <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user.userName"/>         
+            </div>
 
-        <div v-for="user in users" :key="user.id">
-            <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user.userName"/>         
+            <div v-for="post in posts" :key="post.id">
+                <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" 
+                    @likePost="likePost(post)" @addComment="addComment(post)"
+                    :postTitle="post.postTitle" :userName="post.userName" 
+                    :postContent="post.postContent" :numLikes="post.numLikes" 
+                    :numComments="post.numComments"/>
+            </div>
         </div>
-
-        <div v-for="post in posts" :key="post.id">
-            <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" 
-                @likePost="likePost(post)" @addComment="addComment(post)"
-                :postTitle="post.postTitle" :userName="post.userName" 
-                :postContent="post.postContent" :numLikes="post.numLikes" 
-                :numComments="post.numComments"/>
-        </div>
-        
     </v-app>
 </template>
 
