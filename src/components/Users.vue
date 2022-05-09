@@ -2,18 +2,14 @@
     <v-app id="inspire">
         <v-card
         width="400"
-        color="purple"
+        color="#a5844e"
+        theme="dark"
         >
-            <template v-slot:title class="my-1">
-                <v-avatar color="indigo" @click="toAccount">
-                    <v-icon dark>
-                        mdi-account-circle
-                    </v-icon>
-                </v-avatar>
-                {{ userName }}
-                <!--<span class="text-h7 font-weight-light" @click="toAccount">{{ userName }}</span>-->
-                <v-btn flat color="secondary" @click="followAccount">Follow</v-btn>
-            </template>
+            <v-card-title class="d-flex justify-space-between mb-6">
+                        <span @click="toAccount">{{ userName }} </span>
+                        <!--<span class="text-h7 font-weight-light" @click="toAccount">{{ userName }}</span>-->
+                        <v-btn flat color="#afb8c1" @click="followAccount">Follow</v-btn>
+            </v-card-title>
         </v-card>
     </v-app>
 </template>

@@ -41,7 +41,7 @@
         </div>
 
         <div v-for="post in this.filteredPosts" :key="post.id">
-            <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" @addComment="addComment(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" :numComments="post.numComments"/>
+            <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" @likePost="likePost(post)" :postTitle="post.postTitle" :userName="post.userName" :postContent="post.postContent" :numLikes="post.numLikes" />
         </div>
     </div>
 </template>
@@ -80,7 +80,7 @@ export default {
         },
         async fetchCurrUser() {
             const data = sessionStorage.getItem('username')
-            console.log(data)           
+            console.log           
             return this.pullDataFromSourceProp("users","userName", data)
         },
         async filterPosts() {

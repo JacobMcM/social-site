@@ -22,10 +22,9 @@
 
             <div v-for="post in posts" :key="post.id">
                 <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" 
-                    @likePost="likePost(post)" @addComment="addComment(post)"
+                    @likePost="likePost(post)"
                     :postTitle="post.postTitle" :userName="post.userName" 
-                    :postContent="post.postContent" :numLikes="post.numLikes" 
-                    :numComments="post.numComments"/>
+                    :postContent="post.postContent" :numLikes="post.numLikes"/>
             </div>
         </div>
     </v-app>

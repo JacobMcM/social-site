@@ -6,24 +6,31 @@
   >
     <v-layout>
       <v-app-bar
-        color="primary"
+        color="#b24f14"
         density="compact"
       >
-        <template v-slot:prepend>
-          <v-app-bar-nav-icon @click="toHome"></v-app-bar-nav-icon>
-        </template>       
+        <template v-slot:prepend >
+          <v-img @click="toHome"
+          src="./assets/ROBIN.png"
+          aspect-ratio="1"
+          width="25"
+          ></v-img>
+
+          <span class="text-white">Robin</span>
+ 
+        </template>
 
         
-        <v-btn icon="mdi-magnify" @click="toSearch"></v-btn>
-        <v-btn icon="mdi-account-circle" @click="toMainAccount"></v-btn>
 
+        <v-btn icon="mdi-magnify" color="white" @click="toSearch"></v-btn>
+        <v-btn icon="mdi-account-circle" color="white" @click="toMainAccount"></v-btn>
 
  
       </v-app-bar>
     
       <v-main padding>
         
-        <v-container fluid >
+        <v-container fluid color="black">
             <router-view/>
         </v-container>
       </v-main>

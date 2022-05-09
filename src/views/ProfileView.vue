@@ -57,10 +57,9 @@
                     <div v-for="post in profileUserPosts" :key="post.id">
 
                         <Posts @toAccount="toAccount(post)" @followAccount="followAccount(post)" 
-                            @likePost="likePost(post)" @addComment="addComment(post)"
+                            @likePost="likePost(post)"
                             :postTitle="post.postTitle" :userName="post.userName" 
-                            :postContent="post.postContent" :numLikes="post.numLikes" 
-                            :numComments="post.numComments"/>
+                            :postContent="post.postContent" :numLikes="post.numLikes" />
 
                     </div>
                 </div>
@@ -157,9 +156,7 @@ export default {
                 userId: this.currUser.id,
                 postTitle: this.postTitle,
                 postContent: this.postContent,
-                numLikes: 0,
-                numComments: 0,
-                comments: []
+                numLikes: 0
             }
 
             this.addPost(newPost)
