@@ -6,7 +6,7 @@
             theme="dark"
             >
                 <v-card-title class="bg-orange">
-                    <span>{{ this.currUser.userName }}</span>
+                    <span>{{ this.profileUser.userName }}</span>
                 </v-card-title>
             </card>
             <v-tabs
@@ -37,8 +37,7 @@
                     <v-form width="400" >
                         <v-text-field
                             v-model="postTitle"
-                            width="400"
-                            :rules="rules"                            
+                            width="400"                          
                             clearable
                             clear-icon="mdi-delete"
                             maxlength="400"
@@ -129,8 +128,6 @@ export default {
 
             postTitle: "",
             postContent: "",
-
-            rules: [v => v !== "" && v.length <= 25 || 'Max 25 characters'],
         }
     },
     components : {

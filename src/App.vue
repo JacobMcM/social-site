@@ -5,6 +5,43 @@
     max-width="448"
   >
     <v-layout>
+      <v-navigation-drawer
+        v-model="drawer"
+        position="right"
+        temporary
+
+      >
+        <v-list-item
+          prepend-icon="mdi-home"
+          title="Home"
+          @click="toHome"
+        ></v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item
+          prepend-icon="mdi-magnify"
+          title="Search"
+          @click="toSearch"
+        ></v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item
+          prepend-icon="mdi-account-circle"
+          title="Your Account"
+          @click="toMainAccount"
+        ></v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item
+          prepend-icon="mdi-exit-run"
+          title="Sign Out"
+          @click="signOut"
+        ></v-list-item>
+      </v-navigation-drawer>
+
       <v-app-bar
         color="#b24f14"
         density="compact"
@@ -16,14 +53,14 @@
           width="25"
           ></v-img>
 
-          <span class="text-white">Robin</span>
+          <span class="text-white" @click="toHome">Robin&trade;</span>
  
         </template>
 
         
 
         <v-btn icon="mdi-magnify" color="white" @click="toSearch"></v-btn>
-        <v-btn icon="mdi-account-circle" color="white" @click="toMainAccount"></v-btn>
+        <v-btn icon="mdi-account-circle" color="white" @click.stop="drawer = !drawer"></v-btn>
 
  
       </v-app-bar>
@@ -94,6 +131,10 @@ export default {
       await this.$router.push(`/profile/${currUser.id}`)
       this.$router.go()
       //await this.$router.push('/profile')//<-trying to isolate issue
+    },
+    signOut(){
+      sessionStorage.setItem("username", "")
+      this.$router.push('/login')
     }
   },
   async created(){
