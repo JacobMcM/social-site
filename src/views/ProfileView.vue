@@ -68,15 +68,20 @@
 
                     </div>
                 </div>
+
+                <h1 v-if="profileUserPosts.length === 0">{{ this.profileUser.userName }} Has No Posts</h1>
                 
             </div>
 
             <div v-if="this.whichTab === 'followers'">                
-                <div :key="profileUserFollowers.length">
+                <div :key="profileUserFollowers">
                     <div v-for="user in profileUserFollowers" :key="user.id">
                         <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user"/>
                     </div>
                 </div>
+
+                <h1 v-if="this.profileUserFollowers.length === 0">{{ this.profileUser.userName }} Has No Followers</h1>
+                
                 
             </div>
 
@@ -86,6 +91,9 @@
                         <User @toAccount="toAccount(user)" @followAccount="followAccount(user)" :userName="user"/>
                     </div>
                 </div>
+
+                <h1 v-if="this.profileUserFollowing.length === 0">{{ this.profileUser.userName }} Is Following Nobody</h1>
+                
             </div>
         </div>
       
@@ -136,9 +144,6 @@ export default {
 
     },
     methods: {
-        test(data){
-            console.log(data)
-        },
         async fetchUsers() {
             const res = await fetch('http://localhost:5000/users')
             const data = await res.json()
@@ -150,8 +155,6 @@ export default {
             return data
         },
         async makePost(){
-            console.log(this.postTitle)
-            console.log(this.postContent)
             
             const newPost = {
                 userName: this.currUser.userName,
@@ -162,18 +165,10 @@ export default {
             }
 
             this.addPost(newPost)
-
-            console.log(this.profileUserPosts.length)
-
-            console.log(this.profileUserPosts)
             
             const id = this.$route.params.id
             this.profileUserPosts = await this.pullDataFromSourceProp("posts", "userId", id)
             
-            console.log(this.profileUserPosts)
-
-            console.log("adding the new")
-
             this.postTitle = ""
             this.postContent = ""
             this.isMakePost = false
@@ -210,7 +205,6 @@ export default {
             this.whichTab = 'following'
         },
         async pullDataFromSourceProp(source, prop, searchTerm){
-            console.log(source + " and " + prop + " and " + searchTerm)
 
             let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
             if (source === "users"){
@@ -233,20 +227,19 @@ export default {
             })                        
         },
         async toAccount(data){
-            console.log(data)
-
-            console.log(typeof(data.userId))
 
             let id = 0
 
-            if (typeof(data.userId) === "undefined"){//aka if its a User
+            if(typeof(data) === "string"){//needed for how users are rended on Profile
+                const user = await this.pullDataFromSourceProp("users", "userName", data)
+                id = user.id
+            }else if (typeof(data.userId) === "undefined"){//aka if its a User
                 id = data.id
             }else{//aka if its a post
                 id = data.userId
             }
 
-            console.log(id)
-            this.$router.push(`/profile/${id}`)
+            await this.$router.push(`/profile/${id}`)
             this.$router.go()
         },
         async patchFollowers(user, changedDataSet, changedData){
@@ -288,15 +281,11 @@ export default {
 
             let isAlreadyFollowing = false
 
-            console.log(currUser.followingAccounts)
-
             //check if currUser is already following postUser, then unfollow user
             if (postUserName !== currUser.userName){//you can't follow or unfollow yourself
-                console.log("you cant follow or unfollow yourself")
                 
                 
                 for(let followerIndex in currUser.followingAccounts){
-                    console.log(currUser.followingAccounts.at(followerIndex))
                     const follower = currUser.followingAccounts.at(followerIndex)
 
                     if (!isAlreadyFollowing && postUser.userName === follower){
@@ -322,25 +311,17 @@ export default {
                     }
                 }else{
 
-                    console.log(currUser.followingAccounts)
-
                     currUser.followingAccounts.push(postUserName)
-
-                    console.log(currUser.followingAccounts)
 
                     //patch the currUser followingAccounts
                     
                     await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
-                    
-                    console.log("patching complete")
                     
                     //patch the postUser followedByAccounts
 
                     postUser.followedByAccounts.push(currUser.userName)
 
                     await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
-                    
-                    console.log("patching complete")
 
                     //update this.profileUserFollowers: [] & this.profileUserFollowing: [],
                 }

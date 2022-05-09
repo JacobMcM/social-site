@@ -122,11 +122,7 @@ export default {
     async toMainAccount(){
       const username = sessionStorage.getItem('username');
 
-      console.log(username)
-
       const currUser = await this.pullUserFromUsername(username)
-      
-      console.log(currUser)
 
       await this.$router.push(`/profile/${currUser.id}`)
       this.$router.go()

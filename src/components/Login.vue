@@ -43,41 +43,39 @@ export default {
       return data
     },
     async login() {
-      console.log(this.username, this.password);
 
       const users = await this.fetchUsers();
 
-      //console.log(users);
+
+      let wrongPassword = false
 
       users.forEach(user => {
         if (user.userName === this.username && user.password === this.password){
-          console.log("found a match");
           sessionStorage.setItem("username", this.username);
           this.$router.push('/home');
+        }else if(user.userName === this.username && user.password !== this.password){
+          confirm('The Password You have entered is incorrect. Please try again')
+          wrongPassword = true;
         }
       })
 
+      if (!wrongPassword ){
+        if ( !sessionStorage.getItem('username') || sessionStorage.getItem('username') === ""){
+          if (confirm('This user does not exist. Would you like to create a new Account?')) {
+            const newUser = {
+              userName: this.username,
+              password: this.password,
+              avatar: "",
+              followedByAccounts: [],
+              followingAccounts: []
+            }
 
-      if (!sessionStorage.getItem('username') || sessionStorage.getItem('username') === ""){
-        if (confirm('This user does not exist. Would you like to create a new Account?')) {
-          const newUser = {
-            userName: this.username,
-            password: this.password,
-            avatar: "",
-            followedByAccounts: [],
-            followingAccounts: []
+            this.addUser(newUser)
+
+            sessionStorage.setItem("username", this.username);
+
+            this.$router.push('/home')           
           }
-
-          this.addUser(newUser)
-
-          console.log("adding the new")
-
-          sessionStorage.setItem("username", this.username);
-
-           
-
-          console.log("push dumb")
-          this.$router.push('/home')           
         }
       }
       this.username = "";

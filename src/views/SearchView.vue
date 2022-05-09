@@ -62,8 +62,6 @@ export default {
             return data
         },
         async updateSearch() {
-            console.log(this.searchMessage)
-
             this.ready = false
             this.users = await this.fetchUsers()
             this.posts = await this.fetchPosts()
@@ -77,7 +75,6 @@ export default {
             return this.pullDataFromSourceProp("users","userName", data)
         },
         async pullDataFromSourceProp(source, prop, searchTerm){
-            console.log(source + " and " + prop + " and " + searchTerm)
 
             let data = await (await fetch(`http://localhost:5000/${source}?${prop}=${searchTerm}`)).json()
             if (source === "users"){
@@ -100,9 +97,6 @@ export default {
             })                        
         },
         async toAccount(data){
-            console.log(data)
-
-            console.log(typeof(data.userId))
 
             let id = 0
 
@@ -111,8 +105,6 @@ export default {
             }else{//aka if its a post
                 id = data.userId
             }
-
-            console.log(id)
             this.$router.push(`/profile/${id}`)
         },
         async patchFollowers(user, changedDataSet, changedData){
@@ -154,13 +146,10 @@ export default {
 
             let isAlreadyFollowing = false
 
-            console.log(currUser.followingAccounts)
-
             //check if currUser is already following postUser, then unfollow user
             if (postUserName !== currUser.userName){//you can't follow or unfollow yourself
                 
                 for(let followerIndex in currUser.followingAccounts){
-                    console.log(currUser.followingAccounts.at(followerIndex))
                     const follower = currUser.followingAccounts.at(followerIndex)
 
                     if (!isAlreadyFollowing && postUser.userName === follower){
@@ -184,26 +173,18 @@ export default {
                     }
                 }else{
 
-                    console.log(currUser.followingAccounts)
-
                     currUser.followingAccounts.push(postUserName)
-
-                    console.log(currUser.followingAccounts)
 
                     //patch the currUser followingAccounts
                     
                     await this.patchFollowers(currUser, "followingAccounts", currUser.followingAccounts)
-                    
-                    console.log("patching complete")
-                    
+                                        
                     //patch the postUser followedByAccounts
 
                     postUser.followedByAccounts.push(currUser.userName)
 
                     await this.patchFollowers(postUser, "followedByAccounts", postUser.followedByAccounts)
                     
-                    console.log("patching complete")
-
                     //update this.profileUserFollowers: [] & this.profileUserFollowing: [],
                 }
 
